@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="本番変更前の12項目を確認し、GO・CONDITIONAL GO・NO-GOの目安と理由をブラウザ内で整理する無料ツール。">
+  <meta name="theme-color" content="#10233f">
+  <title>IT本番変更 Go/No-Go Checker | OpsFrame Lab</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310233f'/%3E%3Cpath d='M18 32h23M34 23l9 9-9 9' fill='none' stroke='%235be0bf' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./assets/styles.css">
+  <script src="./assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#checker">チェック項目へ移動</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="./" aria-label="OpsFrame Lab Go/No-Go Checker トップ">
+        <span class="brand-mark" aria-hidden="true">OF</span>
+        <span>OpsFrame Lab</span>
+      </a>
+      <span class="privacy-badge">入力は端末内だけ</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="eyebrow">FREE TOOL · PRODUCTION CHANGE</div>
+      <h1 id="page-title">IT本番変更<br><span>Go / No-Go Checker</span></h1>
+      <p class="lead">変更開始前の見落としを、12の問いで整理します。すべて選ぶと、判定の目安と確認すべき理由が表示されます。</p>
+      <div class="trust-row" aria-label="ツールの特徴">
+        <span>無料</span><span>ログイン不要</span><span>送信・保存なし</span>
+      </div>
+    </section>
+
+    <div class="app-layout">
+      <section class="checker-card" id="checker" aria-labelledby="checker-title">
+        <div class="checker-head">
+          <div>
+            <p class="section-kicker">PRE-FLIGHT CHECK</p>
+            <h2 id="checker-title">変更前チェック</h2>
+          </div>
+          <div class="progress-copy" aria-live="polite"><strong id="answered-count">0</strong> / 12 回答</div>
+        </div>
+        <div class="progress-track" role="progressbar" aria-label="回答の進捗" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0">
+          <span id="progress-bar"></span>
+        </div>
+        <p class="instruction">各項目について、現在の準備状況に最も近いものを選んでください。</p>
+        <form id="check-form" novalidate>
+          <div id="questions"></div>
+          <div class="form-actions">
+            <button class="primary-button" type="submit">判定結果を見る</button>
+            <button class="text-button" type="button" id="reset-button">回答をリセット</button>
+          </div>
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+        </form>
+      </section>
+
+      <aside class="side-panel" aria-label="利用上の案内">
+        <div class="side-block">
+          <p class="section-kicker">HOW TO USE</p>
+          <h2>3分で準備状況を確認</h2>
+          <ol class="steps">
+            <li><span>01</span>12項目に回答</li>
+            <li><span>02</span>判定理由を確認</li>
+            <li><span>03</span>未確認事項を解消</li>
+          </ol>
+        </div>
+        <div class="privacy-note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2 4.5 5v5.5c0 4.8 3.1 9.2 7.5 10.5 4.4-1.3 7.5-5.7 7.5-10.5V5L12 2Zm0 3 4.5 1.8v3.7c0 3.2-1.8 6.3-4.5 7.5-2.7-1.2-4.5-4.3-4.5-7.5V6.8L12 5Z"/></svg>
+          <div><strong>プライバシー設計</strong><p>回答内容はサーバへ送信されず、ブラウザにも保存されません。</p></div>
+        </div>
+        <p class="side-disclaimer">本ツールは判断材料を整理するための補助ツールです。変更の安全性や成功を保証するものではありません。</p>
+      </aside>
+    </div>
+
+    <section class="result-panel" id="result" aria-labelledby="result-title" tabindex="-1" hidden>
+      <div class="result-status" id="result-status">
+        <p class="section-kicker">CHECK RESULT</p>
+        <div class="result-heading">
+          <div>
+            <p class="result-label">判定の目安</p>
+            <h2 id="result-title">—</h2>
+          </div>
+          <div class="result-score" aria-label="回答内訳"><span id="yes-count">0</span><small>/ 12 YES</small></div>
+        </div>
+        <p id="result-summary" class="result-summary"></p>
+      </div>
+
+      <div class="result-details">
+        <section aria-labelledby="reasons-title">
+          <h3 id="reasons-title">この判定になった理由</h3>
+          <ul id="reason-list" class="result-list"></ul>
+        </section>
+        <section aria-labelledby="pending-title">
+          <h3 id="pending-title">対応・確認する項目</h3>
+          <ul id="pending-list" class="result-list"></ul>
+          <p id="no-pending" class="all-clear" hidden>未確認・未対応の項目はありません。</p>
+        </section>
+      </div>
+
+      <div class="result-actions">
+        <button class="secondary-button" type="button" id="edit-button">回答を見直す</button>
+      </div>
+
+      <div class="product-cta">
+        <div>
+          <p class="section-kicker">NEXT STEP</p>
+          <h3>判定だけでなく、変更計画を形にする</h3>
+          <p>Safe Change Kitには、Go/No-Go・リスク評価・切り戻し計画をまとめて管理できる実務テンプレートと記入例を収録しています。</p>
+          <p class="product-price">Safe Change Kit <strong>500円</strong></p>
+        </div>
+        <a class="cta-button" href="https://opsframe-lab.booth.pm/items/8885954" target="_blank" rel="noopener noreferrer">BOOTHで内容を見る <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="notice" aria-labelledby="notice-title">
+      <h2 id="notice-title">ご利用にあたって</h2>
+      <p>判定は一般的な変更管理の観点を簡易的に整理した目安です。実際の変更可否は、対象システムの特性、リスク、契約、法令、組織の規程を踏まえ、<strong>最終的には所属組織の規程および責任者の判断に従ってください。</strong></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>© OpsFrame Lab</span>
+      <span>Practical tools for safer IT operations.</span>
+    </div>
+  </footer>
+</body>
+</html>
+

@@ -4,7 +4,7 @@ OpsFrame Labが提供する、本番変更前の準備状況を整理する無�
 
 ## 公開サイト
 
-GitHub Pagesの公開後、この欄にURLを記載します。
+https://opsframe-lab.github.io/opsframe-go-no-go-checker/
 
 ## 主な機能
 
